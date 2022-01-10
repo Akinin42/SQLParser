@@ -35,6 +35,8 @@ public class SQLParser {
             parseGroupByCondition(inputQuery, query);
         } else if (inputQuery.contains("LIMIT") || inputQuery.contains("limit")) {
             parseLimitCondition(inputQuery, query);
+        }else if (inputQuery.contains("OFFSET") || inputQuery.contains("offset")) {
+            parseOffsetCondition(inputQuery, query);
         } else if (query.getSources() == null) {
             parseSources(inputQuery, query);
         }
@@ -97,6 +99,9 @@ public class SQLParser {
 
         }
         String[] inputJoins = splitedInput[1].split("ON");
+        if (inputJoins.length == 1) {
+            inputJoins = splitedInput[1].split("on");
+        }
         parseOtherParts(splitedInput[0].trim(), query);
         parseOtherParts(splitedInput[1].trim(), query);
         Join join = new Join();
@@ -138,6 +143,17 @@ public class SQLParser {
         parseOtherParts(splitedInput[1], query);
         return query;
     }
+    
+    private Query parseOffsetCondition(String inputQuery, Query query) {
+        String[] splitedInput = inputQuery.split("OFFSET");
+        if (splitedInput.length == 1) {
+            splitedInput = inputQuery.split("offset");
+        }
+        int offset = Integer.parseInt(parseCondition(splitedInput[1]));
+        query.setOffset(offset);
+        parseOtherParts(splitedInput[1], query);
+        return query;
+    }
 
     private String parseCondition(String inputQuery) {
         if (inputQuery.contains("GROUP BY") || inputQuery.contains("group by")) {
@@ -168,18 +184,6 @@ public class SQLParser {
             String[] splitedInput = inputQuery.split("WHERE");
             if (splitedInput.length == 1) {
                 splitedInput = inputQuery.split("where");
-            }
-            if (splitedInput[0].trim().endsWith(";")) {
-                String condition = inputQuery.trim();
-                condition = condition.substring(0, condition.length() - 1);
-                return condition;
-            }
-            return splitedInput[0].trim();
-        }
-        if (inputQuery.contains("HAVING") || inputQuery.contains("having")) {
-            String[] splitedInput = inputQuery.split("HAVING");
-            if (splitedInput.length == 1) {
-                splitedInput = inputQuery.split("having");
             }
             if (splitedInput[0].trim().endsWith(";")) {
                 String condition = inputQuery.trim();
