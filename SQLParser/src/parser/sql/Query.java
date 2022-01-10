@@ -1,5 +1,6 @@
 package parser.sql;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Query {
@@ -17,24 +18,33 @@ public class Query {
         return coloumns;
     }
 
-    public void setColoumns(List<String> coloumns) {
-        this.coloumns = coloumns;
+    public void addColoumn(String coloumn) {
+        if (coloumns == null) {
+            coloumns = new ArrayList<>();
+        }
+        coloumns.add(coloumn);
     }
 
     public List<String> getSources() {
         return sources;
     }
 
-    public void setSources(List<String> sources) {
-        this.sources = sources;
+    public void addSource(String source) {
+        if (sources == null) {
+            sources = new ArrayList<>();
+        }
+        sources.add(source);
     }
 
     public List<Join> getJoins() {
         return joins;
     }
 
-    public void setJoins(List<Join> joins) {
-        this.joins = joins;
+    public void addJoin(Join join) {
+        if (joins == null) {
+            joins = new ArrayList<>();
+        }
+        joins.add(join);
     }
 
     public List<WhereClause> getWhereClauses() {
@@ -49,16 +59,22 @@ public class Query {
         return groupByColumns;
     }
 
-    public void setGroupByColumns(List<String> groupByColumns) {
-        this.groupByColumns = groupByColumns;
+    public void addGroupByColumn(String groupByColumn) {
+        if (groupByColumns == null) {
+            groupByColumns = new ArrayList<>();
+        }
+        groupByColumns.add(groupByColumn);
     }
 
     public List<String> getSortColumns() {
         return sortColumns;
     }
-
-    public void setSortColumns(List<String> sortColumns) {
-        this.sortColumns = sortColumns;
+    
+    public void addSortColumn(String sortColumn) {
+        if (sortColumns == null) {
+            sortColumns = new ArrayList<>();
+        }
+        sortColumns.add(sortColumn);
     }
 
     public Integer getLimit() {
